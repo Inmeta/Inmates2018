@@ -37,7 +37,7 @@ namespace RavenAPI.Controllers
             // Here we find the Andersen family via its LastName
             IQueryable<Tenants> tenantsQuery = this.client.CreateDocumentQuery<Tenants>(
                 UriFactory.CreateDocumentCollectionUri("RavenCollection", "Tenants1"),
-                "SELECT * FROM Tenants1",
+                "SELECT * FROM Tenants1", 
                 queryOptions);
             
             return tenantsQuery;
