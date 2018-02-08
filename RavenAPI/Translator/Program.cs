@@ -14,14 +14,14 @@ namespace Microsoft.Translator.Samples
 
         private static async Task MainAsync(string[] args)
         {
-            if ((args == null) || (args.Length < 2))
+            if ((args == null) || (args.Length < 1))
             {
                 PrintUsage();
                 return;
             }
 
-            string subscriptionKey = args[0];
-            string sampleName = args[1];
+            string subscriptionKey = "45aa06bbaafa47f4825bec69faf419d9";
+            string sampleName = args[0];
             try
             {
                 await RunSample(subscriptionKey, sampleName);
@@ -102,7 +102,7 @@ namespace Microsoft.Translator.Samples
             }
             else if (string.Compare(name, "GetTranslations", StringComparison.OrdinalIgnoreCase) == 0)
             {
-                GetTranslationsSample.Run(authToken);
+                GetTranslationsSample.TranslateContent(authToken);
             }
             else if (string.Compare(name, "GetTranslationsArray", StringComparison.OrdinalIgnoreCase) == 0)
             {

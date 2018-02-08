@@ -8,11 +8,15 @@ namespace Microsoft.Translator.Samples
 {
     class GetTranslationsSample
     {
-        public static void Run(string authToken)
+        public static void TranslateContent(string authToken)
         {
-            string text = "una importante contribución a la rentabilidad de la empresa";
-            string uri = "https://api.microsofttranslator.com/v2/Http.svc/GetTranslations?text=" + text + "&from=" + "es" + "&to=" + "en" + "&maxTranslations=5";
-            string requestBody = GenerateTranslateOptionsRequestBody("general", "text/plain", "", "", "", "TestUserId");
+            string text = "Ja det er ikke enkelt å løse to språk på en gang. Det er rett og slett ikke rett fram.";
+            string uri = "https://api.microsofttranslator.com/v2/Http.svc/GetTranslations?text="
+                + text 
+                //+ "&from=no" 
+                + "&to=en" 
+                + "&maxTranslations=5";
+            string requestBody = GenerateTranslateOptionsRequestBody("general", "text/plain", "true", "MsgId", "", "");
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
             request.Headers.Add("Authorization", authToken);
@@ -33,6 +37,14 @@ namespace Microsoft.Translator.Samples
                 XDocument doc = XDocument.Parse(@strResponse);
                 XNamespace ns = "http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2";
                 int i = 1;
+                foreach (XElement xe in doc.Descendants(ns + "GetTranslationsResponse"))
+                {
+                    foreach (var node in xe.Elements())
+                    {
+                        Console.WriteLine("{0} = {1}", node.Name.LocalName, node.Value);
+                    }
+                }
+
                 foreach (XElement xe in doc.Descendants(ns + "TranslationMatch"))
                 {
                     Console.WriteLine("{0}Result {1}", Environment.NewLine, i++);
@@ -51,7 +63,7 @@ namespace Microsoft.Translator.Samples
                 "<TranslateOptions xmlns=\"http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2\">" +
                 "  <Category>{0}</Category>" +
                 "  <ContentType>{1}</ContentType>" +
-                "  <ReservedFlags>{2}</ReservedFlags>" +
+                "  <IncludeMultipleMTAlternatives>{2}</IncludeMultipleMTAlternatives>" +
                 "  <State>{3}</State>" +
                 "  <Uri>{4}</Uri>" +
                 "  <User>{5}</User>" +
