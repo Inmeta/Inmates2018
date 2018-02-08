@@ -28,14 +28,10 @@ namespace RavenAPI.Controllers
         
         public IQueryable<Message> Get()
         {
+            var query = "SELECT * FROM c";
             this.client = new DocumentClient(new Uri("https://ravendb.documents.azure.com:443/"), AuthHelper.CosmosKey);
-            FeedOptions queryOptions = new FeedOptions { MaxItemCount = -1 };
-           
-            IQueryable<Message> messageQuery = this.client.CreateDocumentQuery<Message>(
-                UriFactory.CreateDocumentCollectionUri("RavenCollection", "Messages"),
-                "SELECT * FROM c",
-                queryOptions);
-
+            FeedOptions queryOptions = new FeedOptions { MaxItemCount = -1 };           
+            IQueryable<Message> messageQuery = this.client.CreateDocumentQuery<Message>(UriFactory.CreateDocumentCollectionUri("RavenCollection", "Messages"), query, queryOptions);
             return messageQuery;
         }
 
