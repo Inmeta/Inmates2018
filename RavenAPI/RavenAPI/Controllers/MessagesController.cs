@@ -12,8 +12,16 @@ namespace RavenAPI.Controllers
 {
     public class Message
     {
-        public string content { get; set; }
-        public String messageid { get; set; }
+        public string messageContent { get; set; }
+        public string messageId { get; set; }
+        public string senderTenantId { get; set; }
+        public string senderTenantName { get; set; }
+        public string senderUser { get; set; }
+        public string receiverTenantId { get; set; }
+        public string receiverTenantName { get; set; }
+        public string senderLanguage { get; set; }
+        public int priority { get; set; }
+        public bool riskOfWar { get; set; }
     }
 
     public class MessagesController : ApiController
@@ -52,8 +60,16 @@ namespace RavenAPI.Controllers
                 UriFactory.CreateDocumentCollectionUri("RavenCollection", "Messages"),
                 new Message
                 {
-                    content = postcontent.content,
-                    messageid = guid
+                    messageContent = postcontent.messageContent,
+                    messageId = guid,
+                    priority = postcontent.priority,
+                    receiverTenantId = postcontent.receiverTenantId,
+                    receiverTenantName = postcontent.receiverTenantName,
+                    riskOfWar = postcontent.riskOfWar,
+                    senderLanguage = postcontent.senderLanguage,
+                    senderTenantId = postcontent.senderTenantId,
+                    senderTenantName = postcontent.senderTenantName,
+                    senderUser = postcontent.senderUser
                 })
            );
         }

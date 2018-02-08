@@ -20,9 +20,18 @@ namespace RavenAPI.Controllers
         private DocumentClient client;
 
         // GET: api/Messages
-        public IEnumerable<string> Get()
+        public IQueryable<Tenant> Get()
         {
-            return new string[] { "value1", "value2" };
+            this.client = new DocumentClient(new Uri("https://ravendb.documents.azure.com:443/"), AuthHelper.CosmosKey);
+            FeedOptions queryOptions = new FeedOptions { MaxItemCount = -1 };
+
+            // Here we find the Andersen family via its LastName
+            IQueryable<Tenant> tenantQuery = this.client.CreateDocumentQuery<Tenant>(
+                UriFactory.CreateDocumentCollectionUri("RavenCollection", "Tenants"),
+                "SELECT * FROM Tenants",
+                queryOptions);
+
+            return tenantQuery;
         }
 
         // GET api/values/5
