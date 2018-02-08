@@ -7,9 +7,11 @@ namespace Microsoft.Translator.Samples
 {
     class SpeakSample
     {
-        public static void Run(string authToken)
+        public static void Run(string authToken, string text)
         {
-            string uri = "https://api.microsofttranslator.com/v2/Http.svc/Speak?text=welcome&language=en&format=" + HttpUtility.UrlEncode("audio/wav") + "&options=MaxQuality";
+            string uri = "https://api.microsofttranslator.com/v2/Http.svc/Speak?text="
+                + text + "&language=en" 
+                + "&format="+ HttpUtility.UrlEncode("audio /wav") + "&options=MaxQuality";
             WebRequest webRequest = WebRequest.Create(uri);
             webRequest.Headers.Add("Authorization", authToken);
             using (WebResponse response = webRequest.GetResponse())
