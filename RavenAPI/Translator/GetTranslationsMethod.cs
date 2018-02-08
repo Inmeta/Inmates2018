@@ -8,18 +8,18 @@ namespace Microsoft.Translator.Samples
 {
     class GetTranslationsSample
     {
-        public static void TranslateContent(string authToken)
+        public static async void TranslateContentAsync(string text)
         {
-            string text = "Ja det er ikke enkelt å løse to språk på en gang. Det er rett og slett ikke rett fram.";
             string uri = "https://api.microsofttranslator.com/v2/Http.svc/GetTranslations?text="
-                + text 
+                + text
                 //+ "&from=no" 
-                + "&to=en" 
+                + "&to=en"
                 + "&maxTranslations=5";
             string requestBody = GenerateTranslateOptionsRequestBody("general", "text/plain", "true", "MsgId", "", "");
 
+            string token = await TokenService.GetTokenAsync();
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
-            request.Headers.Add("Authorization", authToken);
+            request.Headers.Add("Authorization", token);
             request.ContentType = "text/xml";
             request.Method = "POST";
             using (Stream stream = request.GetRequestStream())
@@ -33,7 +33,8 @@ namespace Microsoft.Translator.Samples
                 StreamReader rdr = new StreamReader(respStream, System.Text.Encoding.ASCII);
                 string strResponse = rdr.ReadToEnd();
 
-                Console.WriteLine("Available translations for source text '{0}' are", text);
+                //SpeakSample.Run(authToken, text);
+                //Console.WriteLine("Available translations for source text '{0}' are", text);
                 XDocument doc = XDocument.Parse(@strResponse);
                 XNamespace ns = "http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2";
                 int i = 1;

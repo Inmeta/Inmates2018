@@ -102,7 +102,7 @@ namespace Microsoft.Translator.Samples
             }
             else if (string.Compare(name, "GetTranslations", StringComparison.OrdinalIgnoreCase) == 0)
             {
-                GetTranslationsSample.TranslateContent(authToken);
+                GetTranslationsSample.TranslateContentAsync("Dette er en test");
             }
             else if (string.Compare(name, "GetTranslationsArray", StringComparison.OrdinalIgnoreCase) == 0)
             {
@@ -110,7 +110,7 @@ namespace Microsoft.Translator.Samples
             }
             else if (string.Compare(name, "Speak", StringComparison.OrdinalIgnoreCase) == 0)
             {
-                SpeakSample.Run(authToken);
+                SpeakSample.Run(authToken, "");
             }
             else if (string.Compare(name, "TranslateArray", StringComparison.OrdinalIgnoreCase) == 0)
             {

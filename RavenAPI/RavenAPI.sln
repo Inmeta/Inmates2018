@@ -5,7 +5,9 @@ VisualStudioVersion = 15.0.26430.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RavenAPI", "RavenAPI\RavenAPI.csproj", "{373BF615-41C9-40B6-8509-4784FC10C34E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextTranslationSample", "Translator\TextTranslationSample.csproj", "{D5046B55-3EE5-4BCA-A765-9C1B991C1EFF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextTranslationTest", "Translator\TextTranslationTest.csproj", "{D5046B55-3EE5-4BCA-A765-9C1B991C1EFF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProcessMessage", "ProcessMessage\ProcessMessage.csproj", "{3C521745-830B-41F2-AC0D-65344D77D82B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{D5046B55-3EE5-4BCA-A765-9C1B991C1EFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5046B55-3EE5-4BCA-A765-9C1B991C1EFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5046B55-3EE5-4BCA-A765-9C1B991C1EFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C521745-830B-41F2-AC0D-65344D77D82B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C521745-830B-41F2-AC0D-65344D77D82B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C521745-830B-41F2-AC0D-65344D77D82B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C521745-830B-41F2-AC0D-65344D77D82B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
