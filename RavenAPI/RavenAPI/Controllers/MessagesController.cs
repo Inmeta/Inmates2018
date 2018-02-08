@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Microsoft.Azure.Documents.Client;
-using Newtonsoft.Json;
 using RavenAPI.Helpers;
 
 namespace RavenAPI.Controllers
@@ -26,30 +24,30 @@ namespace RavenAPI.Controllers
 
     public class MessagesController : ApiController
     {
-        private DocumentClient client;        
-
-        // GET: api/Messages
+        private DocumentClient client;   
+        
         public IQueryable<Message> Get()
         {
             this.client = new DocumentClient(new Uri("https://ravendb.documents.azure.com:443/"), AuthHelper.CosmosKey);
             FeedOptions queryOptions = new FeedOptions { MaxItemCount = -1 };
-
-            // Here we find the Andersen family via its LastName
+           
             IQueryable<Message> messageQuery = this.client.CreateDocumentQuery<Message>(
                 UriFactory.CreateDocumentCollectionUri("RavenCollection", "Messages"),
-                "SELECT * FROM Messages",
+                "SELECT * FROM c",
                 queryOptions);
 
             return messageQuery;
         }
 
-        // GET: api/Messages/5
-        public string Get(int id)
+        public IQueryable<Message> Get(string senderTenantName)
         {
-            return "value";
+            var query = string.Format("SELECT * FROM c WHERE c.senderTenantName='{0}'", senderTenantName);
+            this.client = new DocumentClient(new Uri("https://ravendb.documents.azure.com:443/"), AuthHelper.CosmosKey);
+            FeedOptions queryOptions = new FeedOptions { MaxItemCount = -1 };            
+            IQueryable<Message> messageQuery = this.client.CreateDocumentQuery<Message>(UriFactory.CreateDocumentCollectionUri("RavenCollection", "Messages"), query, queryOptions);
+            return messageQuery;
         }
-
-        // POST: api/Messages
+       
         public object Post([FromBody] Message postcontent)
         {
             var guid = Guid.NewGuid().ToString();
@@ -72,17 +70,6 @@ namespace RavenAPI.Controllers
                     senderUser = postcontent.senderUser
                 })
            );
-        }
-
-        // PUT: api/Messages/5
-        public void Put(int id, [FromBody]string value)
-        {
-
-        }
-
-        // DELETE: api/Messages/5
-        public void Delete(int id)
-        {
         }
     }
 }
