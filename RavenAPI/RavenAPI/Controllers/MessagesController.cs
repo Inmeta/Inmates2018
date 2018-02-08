@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Microsoft.Azure.Documents.Client;
-using Newtonsoft.Json;
 using RavenAPI.Helpers;
 
 namespace RavenAPI.Controllers
@@ -26,30 +24,35 @@ namespace RavenAPI.Controllers
 
     public class MessagesController : ApiController
     {
-        private DocumentClient client;        
-
-        // GET: api/Messages
+        private DocumentClient client;   
+        
         public IQueryable<Message> Get()
         {
+            var query = "SELECT * FROM c";
             this.client = new DocumentClient(new Uri("https://ravendb.documents.azure.com:443/"), AuthHelper.CosmosKey);
-            FeedOptions queryOptions = new FeedOptions { MaxItemCount = -1 };
-
-            // Here we find the Andersen family via its LastName
-            IQueryable<Message> messageQuery = this.client.CreateDocumentQuery<Message>(
-                UriFactory.CreateDocumentCollectionUri("RavenCollection", "Messages"),
-                "SELECT * FROM Messages",
-                queryOptions);
-
+            FeedOptions queryOptions = new FeedOptions { MaxItemCount = -1 };           
+            IQueryable<Message> messageQuery = this.client.CreateDocumentQuery<Message>(UriFactory.CreateDocumentCollectionUri("RavenCollection", "Messages"), query, queryOptions);
             return messageQuery;
         }
 
-        // GET: api/Messages/5
-        public string Get(int id)
+        public IQueryable<Message> Get(string senderTenantName, string senderTenantId, string receiverTenantId, string receivertenantName)
         {
-            return "value";
-        }
+            var query = "";
+            if (!String.IsNullOrEmpty(senderTenantName))
+                query = string.Format("SELECT * FROM c WHERE c.senderTenantName='{0}'", senderTenantName);
+            else if(!String.IsNullOrEmpty(senderTenantId))
+                query = string.Format("SELECT * FROM c WHERE c.senderTenantId='{0}'", senderTenantId);
+            else if(!String.IsNullOrEmpty(receiverTenantId))
+                query = string.Format("SELECT * FROM c WHERE c.receiverTenantId='{0}'", receiverTenantId);
+            else if (!String.IsNullOrEmpty(receivertenantName))
+                query = string.Format("SELECT * FROM c WHERE c.receiverTenantName='{0}'", receivertenantName);
 
-        // POST: api/Messages
+            this.client = new DocumentClient(new Uri("https://ravendb.documents.azure.com:443/"), AuthHelper.CosmosKey);
+            FeedOptions queryOptions = new FeedOptions { MaxItemCount = -1 };            
+            IQueryable<Message> messageQuery = this.client.CreateDocumentQuery<Message>(UriFactory.CreateDocumentCollectionUri("RavenCollection", "Messages"), query, queryOptions);
+            return messageQuery;
+        }
+       
         public object Post([FromBody] Message postcontent)
         {
             var guid = Guid.NewGuid().ToString();
@@ -72,17 +75,6 @@ namespace RavenAPI.Controllers
                     senderUser = postcontent.senderUser
                 })
            );
-        }
-
-        // PUT: api/Messages/5
-        public void Put(int id, [FromBody]string value)
-        {
-
-        }
-
-        // DELETE: api/Messages/5
-        public void Delete(int id)
-        {
         }
     }
 }
