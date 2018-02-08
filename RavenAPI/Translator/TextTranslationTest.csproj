@@ -57,6 +57,7 @@
     <Compile Include="GetLanguagesForTranslateMethod.cs" />
     <Compile Include="GetTranslationsArrayMethod.cs" />
     <Compile Include="GetTranslationsMethod.cs" />
+    <Compile Include="Mood.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpeakMethod.cs" />

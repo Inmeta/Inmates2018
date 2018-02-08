@@ -116,6 +116,10 @@ namespace Microsoft.Translator.Samples
             {
                 await TranslateArraySample.Run(authToken);
             }
+            else if (string.Compare(name, "Mood", StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                MoodTest.Sentiment("How are you dooing?","Code");
+            }
             else if (string.Compare(name, "Translate", StringComparison.OrdinalIgnoreCase) == 0)
             {
                 TranslateSample.Run(authToken);
