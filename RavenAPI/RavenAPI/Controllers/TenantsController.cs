@@ -10,7 +10,7 @@ namespace RavenAPI.Controllers
 {
     public class Tenant
     {
-        public string title { get; set; }        
+        public string title { get; set; }
     }
 
     public class TenantsController : ApiController
@@ -39,7 +39,7 @@ namespace RavenAPI.Controllers
                 UriFactory.CreateDocumentCollectionUri("RavenCollection", "Tenants"),
                 new Tenant
                 {
-                    title = postcontent.title                    
+                    title = postcontent.title
                 })
            );
         }
