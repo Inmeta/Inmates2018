@@ -1,0 +1,12 @@
+{
+  "$schema": "https://dev.office.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "acdc-2018-client-side-solution",
+    "id": "7c11167a-03e1-4f91-a43f-0e1cd887f72e",
+    "version": "1.0.0.0",
+    "skipFeatureDeployment": true
+  },
+  "paths": {
+    "zippedPackage": "solution/acdc-2018.sppkg"
+  }
+}
