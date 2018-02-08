@@ -39,9 +39,18 @@ namespace RavenAPI.Controllers
             return messageQuery;
         }
 
-        public IQueryable<Message> Get(string senderTenantName)
+        public IQueryable<Message> Get(string senderTenantName, string senderTenantId, string receiverTenantId, string receivertenantName)
         {
-            var query = string.Format("SELECT * FROM c WHERE c.senderTenantName='{0}'", senderTenantName);
+            var query = "";
+            if (!String.IsNullOrEmpty(senderTenantName))
+                query = string.Format("SELECT * FROM c WHERE c.senderTenantName='{0}'", senderTenantName);
+            else if(!String.IsNullOrEmpty(senderTenantId))
+                query = string.Format("SELECT * FROM c WHERE c.senderTenantId='{0}'", senderTenantId);
+            else if(!String.IsNullOrEmpty(receiverTenantId))
+                query = string.Format("SELECT * FROM c WHERE c.receiverTenantId='{0}'", receiverTenantId);
+            else if (!String.IsNullOrEmpty(receivertenantName))
+                query = string.Format("SELECT * FROM c WHERE c.receiverTenantName='{0}'", receivertenantName);
+
             this.client = new DocumentClient(new Uri("https://ravendb.documents.azure.com:443/"), AuthHelper.CosmosKey);
             FeedOptions queryOptions = new FeedOptions { MaxItemCount = -1 };            
             IQueryable<Message> messageQuery = this.client.CreateDocumentQuery<Message>(UriFactory.CreateDocumentCollectionUri("RavenCollection", "Messages"), query, queryOptions);
