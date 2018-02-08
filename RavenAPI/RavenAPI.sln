@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.26430.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RavenAPI", "RavenAPI\RavenAPI.csproj", "{373BF615-41C9-40B6-8509-4784FC10C34E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextTranslationSample", "..\..\Translator\TextTranslationSample.csproj", "{D5046B55-3EE5-4BCA-A765-9C1B991C1EFF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextTranslationSample", "Translator\TextTranslationSample.csproj", "{D5046B55-3EE5-4BCA-A765-9C1B991C1EFF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
