@@ -17,7 +17,7 @@ namespace RavenAPI.Controllers
         public int NumMessages { get; set; }
 
         [JsonProperty(PropertyName = "id")]
-        public string TenantId { get; set; }
+        public string id { get; set; }
     }
     public class MoodUpdater
     {
@@ -25,31 +25,33 @@ namespace RavenAPI.Controllers
         {
             var mc = new MoodsController();
             IQueryable<Mood> mood = mc.Get(msg.receiverTenantId);
-            Mood m;
-            if (mood.Select(x => x.TenantId == msg.receiverTenantId) is null)
+            bool hasValues = false;
+
+            var enMsg = Language.Translate(msg.messageContent);
+            var newMsgMood = MoodService.Sentiment(msg.messageContent, msg.id);
+
+
+            foreach (Mood m in mood)
+            {
+                m.NumMessages++;
+                m.Trend = (m.Trend + m.Average + newMsgMood.Documents[0].Score) / 3;
+                m.Average = (m.Average * (m.NumMessages - 1) + newMsgMood.Documents[0].Score) / m.NumMessages;
+                mc.Put(m);
+
+                hasValues = true;
+            }
+            if (!hasValues)
             {
                 var nm = new Mood()
                 {
                     Average = 0.5,
                     Trend = 0.5,
                     NumMessages = 1,
-                    TenantId = msg.receiverTenantId
+                    id = msg.receiverTenantId
                 };
                 mc.Post(nm);
-                m = nm;
-            }
-            else
-            {
-                m = mood.First();
             }
 
-            var enMsg = Language.Translate(msg.messageContent);
-            var newMsgMood = MoodService.Sentiment(enMsg, msg.messageId);
-
-            m.NumMessages++;
-            m.Trend = (m.Trend + m.Average + newMsgMood.Documents[0].Score) / 3;
-            m.Average = (m.Average * (m.NumMessages - 1) + newMsgMood.Documents[0].Score) / m.NumMessages;
-            mc.Put(m);
         }
     }
 
@@ -69,7 +71,7 @@ namespace RavenAPI.Controllers
 
         public IQueryable<Mood> Get(string tenantId)
         {
-            var query = string.Format("SELECT * FROM m WHERE m.tenantId='{0}'", tenantId);
+            var query = string.Format("SELECT * FROM m WHERE m.id='{0}'", tenantId);
 
             client = new DocumentClient(new Uri("https://ravendb.documents.azure.com:443/"), AuthHelper.CosmosKey);
             FeedOptions queryOptions = new FeedOptions { MaxItemCount = -1 };
@@ -78,31 +80,36 @@ namespace RavenAPI.Controllers
             return messageQuery;
         }
        
-        public string Post([FromBody] Mood postcontent)
+        public string Post([FromBody] Mood content)
         {
             var date = DateTime.Now;
             var guid = Guid.NewGuid().ToString();
             this.client = new DocumentClient(new Uri("https://ravendb.documents.azure.com:443/"), AuthHelper.CosmosKey);
-
-
             client.CreateDocumentAsync(
                 UriFactory.CreateDocumentCollectionUri("RavenCollection", "Moods"),
                 new Mood
                 {
-                    Average = postcontent.Average,
-                    Trend = postcontent.Trend,
-                    NumMessages = postcontent.NumMessages,
-                    TenantId = postcontent.TenantId
+                    Average = content.Average,
+                    Trend = content.Trend,
+                    NumMessages = content.NumMessages,
+                    id = content.id
                 });
             return guid;
         }
 
-        public void Put([FromBody]Mood value)
+        public void Put([FromBody]Mood content)
         {
             this.client = new DocumentClient(new Uri("https://ravendb.documents.azure.com:443/"), AuthHelper.CosmosKey);
-            client.UpsertDocumentAsync(UriFactory.CreateDocumentCollectionUri("RavenCollection", "Moods"), value);
+            client.UpsertDocumentAsync(
+                UriFactory.CreateDocumentCollectionUri("RavenCollection", "Moods"), 
+                new Mood
+            {
+                Average = content.Average,
+                Trend = content.Trend,
+                NumMessages = content.NumMessages,
+                id = content.id
+            });
+
         }
-
-
     }
 }
