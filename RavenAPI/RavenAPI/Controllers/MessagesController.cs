@@ -99,7 +99,9 @@ namespace RavenAPI.Controllers
                     hashmessage = hashstring,
                     tampered = postcontent.tampered
                 });
-            return guid;            
+            MoodsController mc = new MoodsController();
+            mc.UpdateMoodForReceiver(postcontent);
+            return guid;
         }
 
         public object Put([FromBody] Message value)

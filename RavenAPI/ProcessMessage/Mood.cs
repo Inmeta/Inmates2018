@@ -6,7 +6,7 @@ using System.IO;
 
 namespace ProcessMessage
 {
-    class Mood
+    public class MoodService
     {
         public static MoodResponse Sentiment(string text, string messageId, string toLanguage = "en")
         {

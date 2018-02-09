@@ -6,7 +6,7 @@ using System.Web;
 
 namespace ProcessMessage
 {
-    class Language
+    public class Language
     {
         public static string Translate(string text, string toLanguage = "en")
         {
