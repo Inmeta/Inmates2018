@@ -77,6 +77,8 @@ namespace RavenAPI.Controllers
                     senderUser = postcontent.senderUser,
                     messageTimestamp = date
                 });
+            MoodsController mc = new MoodsController();
+            mc.UpdateMoodForReceiver(postcontent);
             return guid;
         }
 
