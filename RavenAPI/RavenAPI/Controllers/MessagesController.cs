@@ -53,13 +53,13 @@ namespace RavenAPI.Controllers
             return messageQuery;
         }
        
-        public object Post([FromBody] Message postcontent)
+        public string Post([FromBody] Message postcontent)
         {
             var guid = Guid.NewGuid().ToString();
             this.client = new DocumentClient(new Uri("https://ravendb.documents.azure.com:443/"), AuthHelper.CosmosKey);
 
-            return Request.CreateResponse(HttpStatusCode.OK,
-               client.CreateDocumentAsync(
+
+            client.CreateDocumentAsync(
                 UriFactory.CreateDocumentCollectionUri("RavenCollection", "Messages"),
                 new Message
                 {
@@ -73,8 +73,8 @@ namespace RavenAPI.Controllers
                     senderTenantId = postcontent.senderTenantId,
                     senderTenantName = postcontent.senderTenantName,
                     senderUser = postcontent.senderUser
-                })
-           );
+                });
+            return guid;
         }
     }
 }
