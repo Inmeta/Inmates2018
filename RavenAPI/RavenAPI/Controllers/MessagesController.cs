@@ -97,7 +97,7 @@ namespace RavenAPI.Controllers
                     //hashmessage = hashed,
                     tampered = postcontent.tampered
                 });
-            MoodsController mc = new MoodsController();
+            MoodUpdater mc = new MoodUpdater();
             mc.UpdateMoodForReceiver(postcontent);
             return guid;
         }
