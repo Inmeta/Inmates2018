@@ -11,6 +11,8 @@ namespace RavenAPI.Controllers
     public class Tenant
     {
         public string tenantTitle { get; set; }
+        public string tenantName { get; set; }
+        public string tenantId { get; set; }
     }
 
     public class TenantsController : ApiController
@@ -39,7 +41,12 @@ namespace RavenAPI.Controllers
         {
             this.client = new DocumentClient(new Uri("https://ravendb.documents.azure.com:443/"), AuthHelper.CosmosKey);
             return Request.CreateResponse(HttpStatusCode.OK,
-                client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri("RavenCollection", "Tenants"),new Tenant { tenantTitle = postcontent.tenantTitle }));
+                client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri("RavenCollection", "Tenants"),
+                new Tenant {
+                    tenantTitle = postcontent.tenantTitle,
+                    tenantId = postcontent.tenantId,
+                    tenantName = postcontent.tenantName
+                }));
         }
     }
 }
