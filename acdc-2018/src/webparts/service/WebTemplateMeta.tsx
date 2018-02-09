@@ -1,19 +1,32 @@
 import * as React from "react";
+import styles from './../webTemplateGenerator/components/WebTemplateGenerator.module.scss';
 import { Action, IWebTemplateMeta } from "./IWebTemplateMeta";
 import { findIndex } from "@microsoft/sp-lodash-subset";
 export const RenderAction = (action: Action) => {
     let actionElement: JSX.Element = <div>Not implemented</div>;
     let actionElements: JSX.Element[] = [];
     if (action._fillChoiceProp && action._fillChoiceProp.length) {
-        Object.keys(action)
-        .filter(actionProp => !["verb", "_fillChoiceProp", "subactions"].indexOf(actionProp))
+
+        actionElements = Object.keys(action)
+        .filter(actionProp => ["verb", "_fillChoiceProp", "subactions"].indexOf(actionProp) == -1)
         .map(actionProp => {
-            if (typeof action._fillChoiceProp[0].propName === actionProp) {
-                actionElements.push(<div key={Math.random().toString()}>Select one of values</div>)
+            if (action._fillChoiceProp[0].propName === actionProp) {
+                return (
+                    <select style={{width: 200}}>
+                        <option title="" value="None">{action.name}</option>
+                        {action._fillChoiceProp[0].propValue.map(choiceValue => {
+                            return (
+                                <option title={choiceValue.name} value={choiceValue.val} key={Math.random()}>
+                                    {choiceValue.name}
+                                </option>
+                            );
+                        })}
+                    </select>
+                );
             } else if (typeof action[actionProp] === "string") {
-                actionElements.push(<input type="text" key={Math.random().toString()} value={actionProp} />);
+                return <input type="text" value={actionProp} />;
             } else if (typeof action[actionProp] === "number") {
-                actionElements.push(<input type="number" key={Math.random().toString()} value={actionProp}  />);
+                return <input type="number"value={actionProp}  />;
             }
         });
         // actionElement = (
@@ -30,7 +43,11 @@ export const RenderAction = (action: Action) => {
 
         // );
 
-        return <div>{actionElements.map(el => { return el; })} </div>;
+        return (
+            <div  className="ms-Class-row"  >
+                {actionElements.map(el => { return <div className="ms-Class-row" key={Math.random()}>{el}</div>; })}
+            </div>
+        );
     }
 
 
