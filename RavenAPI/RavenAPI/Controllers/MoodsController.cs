@@ -7,6 +7,8 @@ using Microsoft.Azure.Documents.Client;
 using RavenAPI.Helpers;
 using ProcessMessage;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Text;
 
 namespace RavenAPI.Controllers
 {
@@ -20,9 +22,44 @@ namespace RavenAPI.Controllers
         public string id { get; set; }
         public string TenantName { get; set; }
     }
+    public class GridEvent<T> where T : class
+    {
+        public string Id { get; set; }
+        public string Subject { get; set; }
+        public string EventType { get; set; }
+        public T Data { get; set; }
+        public DateTime EventTime { get; set; }
+    }
     public class MoodUpdater
     {
-        public void UpdateMoodForReceiver(Message msg)
+        public void FireMoodUpdate(Message msg)
+        {
+            string topicEndpoint = "https://inmateseventgrid.northeurope-1.eventgrid.azure.net/api/events";
+            string sasKey = "rl4ZTyin7VJ/VdVisbJx07a4YRUcrlTmMXxon6qQaKk=";
+
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Add("aeg-sas-key", sasKey);
+            client.DefaultRequestHeaders.UserAgent.ParseAdd("RavenAPI");
+
+            List<GridEvent<Message>> eventList = new List<GridEvent<Message>>();
+            eventList.Add(new GridEvent<Message>
+            {
+                Subject = "NewMessage",
+                EventTime = DateTime.UtcNow,
+                EventType = "UpdateMood",
+                Id = Guid.NewGuid().ToString(),
+                Data = msg
+            });
+
+            string json = JsonConvert.SerializeObject(eventList);
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, topicEndpoint)
+            {
+                Content = new StringContent(json, Encoding.UTF8, "application/json")
+            };
+
+            HttpResponseMessage response = client.SendAsync(request).GetAwaiter().GetResult();
+        }
+        public void ProcessFireMoodUpdate(Message msg)
         {
             var mc = new MoodsController();
             IQueryable<Mood> mood = mc.Get(msg.receiverTenantId);

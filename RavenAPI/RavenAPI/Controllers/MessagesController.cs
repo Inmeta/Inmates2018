@@ -100,7 +100,7 @@ namespace RavenAPI.Controllers
                     tampered = postcontent.tampered
                 });
             MoodUpdater mc = new MoodUpdater();
-            mc.UpdateMoodForReceiver(postcontent);
+            mc.FireMoodUpdate(postcontent);
             return guid;
         }
 
