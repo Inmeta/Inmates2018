@@ -80,6 +80,7 @@ namespace ProcessMessage
                 request.RequestUri = ServiceUrl;
                 request.Content = new StringContent(string.Empty);
                 request.Headers.TryAddWithoutValidation(OcpApimSubscriptionKeyHeader, this.SubscriptionKey);
+                request.Headers.TryAddWithoutValidation("Content-Type","application/x-www-form-urlencoded");
                 client.Timeout = TimeSpan.FromSeconds(2);
                 var response = await client.SendAsync(request);
                 this.RequestStatusCode = response.StatusCode;

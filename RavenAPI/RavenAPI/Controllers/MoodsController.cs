@@ -28,7 +28,7 @@ namespace RavenAPI.Controllers
             bool hasValues = false;
 
             var enMsg = Language.Translate(msg.messageContent);
-            var newMsgMood = MoodService.Sentiment(msg.messageContent, msg.id);
+            var newMsgMood = MoodService.Sentiment(enMsg, msg.id);
 
 
             foreach (Mood m in mood)
