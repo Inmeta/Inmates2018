@@ -13,6 +13,7 @@ namespace RavenAPI.Controllers
         public string tenantTitle { get; set; }
         public string tenantName { get; set; }
         public string tenantId { get; set; }
+        public string id { get; set; }
     }
 
     public class TenantsController : ApiController
@@ -47,7 +48,8 @@ namespace RavenAPI.Controllers
                 {
                     tenantTitle = postcontent.tenantTitle,
                     tenantId = guid,
-                    tenantName = postcontent.tenantName
+                    tenantName = postcontent.tenantName,
+                    id = postcontent.id
                 });
 
             return guid;
