@@ -20,6 +20,7 @@ namespace RavenAPI.Controllers
         public string senderLanguage { get; set; }
         public int priority { get; set; }
         public bool riskOfWar { get; set; }
+        public DateTime messageTimestamp { get; set; }
     }
 
     public class MessagesController : ApiController
@@ -55,6 +56,7 @@ namespace RavenAPI.Controllers
        
         public string Post([FromBody] Message postcontent)
         {
+            var date = DateTime.Now;
             var guid = Guid.NewGuid().ToString();
             this.client = new DocumentClient(new Uri("https://ravendb.documents.azure.com:443/"), AuthHelper.CosmosKey);
 
@@ -72,9 +74,15 @@ namespace RavenAPI.Controllers
                     senderLanguage = postcontent.senderLanguage,
                     senderTenantId = postcontent.senderTenantId,
                     senderTenantName = postcontent.senderTenantName,
-                    senderUser = postcontent.senderUser
+                    senderUser = postcontent.senderUser,
+                    messageTimestamp = date
                 });
             return guid;
+        }
+
+        public void Put(int id, [FromBody]string value)
+        {
+
         }
     }
 }
