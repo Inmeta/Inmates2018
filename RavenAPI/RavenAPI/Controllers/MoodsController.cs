@@ -18,7 +18,7 @@ namespace RavenAPI.Controllers
 
         [JsonProperty(PropertyName = "id")]
         public string id { get; set; }
-        public string TennantName { get; set; }
+        public string TenantName { get; set; }
     }
     public class MoodUpdater
     {
@@ -48,7 +48,7 @@ namespace RavenAPI.Controllers
                     Average = 0.5,
                     Trend = 0.5,
                     NumMessages = 1,
-                    TennantName = msg.receiverTenantName,
+                    TenantName = msg.receiverTenantName,
                     id = msg.receiverTenantId
                 };
                 mc.Post(nm);
@@ -94,7 +94,7 @@ namespace RavenAPI.Controllers
                     Average = content.Average,
                     Trend = content.Trend,
                     NumMessages = content.NumMessages,
-                    TennantName = content.TennantName,
+                    TenantName = content.TenantName,
                     id = content.id
                 });
             return guid;
@@ -110,7 +110,7 @@ namespace RavenAPI.Controllers
                 Average = content.Average,
                 Trend = content.Trend,
                 NumMessages = content.NumMessages,
-                    TennantName = content.TennantName,
+                    TenantName = content.TenantName,
                     id = content.id
             });
 
