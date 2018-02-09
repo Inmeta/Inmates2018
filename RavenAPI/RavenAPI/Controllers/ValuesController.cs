@@ -1,18 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 // ADD THIS PART TO YOUR CODE
-using System.Net;
-using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
-using Newtonsoft.Json;
 using RavenAPI.Helpers;
 
 

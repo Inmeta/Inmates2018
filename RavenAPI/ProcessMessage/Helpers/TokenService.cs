@@ -21,7 +21,7 @@ namespace ProcessMessage
                 };
             }
             string authToken;
-            authToken = _reuse._authTokenSource.GetAccessTokenAsync().GetAwaiter().GetResult();
+            authToken = _reuse._authTokenSource.GetAccessToken();
             return authToken;
         }
     }
