@@ -78,7 +78,7 @@ namespace RavenAPI.Controllers
             HashAlgorithm alg = MD5.Create();
             var hashed = alg.ComputeHash(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(postcontent)));
 
-            var hashstring = BitConverter.ToString(hashed).Replace("-", "");
+            var hashstring = Convert.ToBase64String(hashed);
 
             client.CreateDocumentAsync(
                 UriFactory.CreateDocumentCollectionUri("RavenCollection", "Messages"),
