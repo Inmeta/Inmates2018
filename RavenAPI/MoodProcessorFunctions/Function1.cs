@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -5,12 +6,24 @@ using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Host;
+using Newtonsoft.Json;
+using RavenAPI.Controllers;
 
 namespace MoodProcessorFunctions
 {
     public static class Function1
     {
-        [FunctionName("Function1")]
+        public class GridEvent
+        {
+            public string Id { get; set; }
+            public string EventType { get; set; }
+            public string Subject { get; set; }
+            public DateTime EventTime { get; set; }
+            public Message Data { get; set; }
+            public string Topic { get; set; }
+        }
+
+        [FunctionName("MoodFoodProcessor")]
         public static async Task<HttpResponseMessage> Run([HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)]HttpRequestMessage req, TraceWriter log)
         {
             log.Info("C# HTTP trigger function processed a request.");
@@ -21,14 +34,37 @@ namespace MoodProcessorFunctions
                 .Value;
 
             // Get request body
-            dynamic data = await req.Content.ReadAsAsync<object>();
+            //dynamic data = await req.Content.ReadAsAsync<object>();
+            dynamic data = await req.Content.ReadAsStringAsync();
 
             // Set name to query string or body data
             name = name ?? data?.name;
 
-            return name == null
-                ? req.CreateResponse(HttpStatusCode.BadRequest, "Please pass a name on the query string or in the request body")
-                : req.CreateResponse(HttpStatusCode.OK, "Hello " + name);
+            var events = JsonConvert.DeserializeObject<GridEvent[]>(data);
+            //if (req.Headers.GetValues("Aeg-Event-Type").FirstOrDefault() == "SubscriptionValidation")
+            //{
+            //    var code = events[0].Data["validationCode"];
+            //    return req.CreateResponse(HttpStatusCode.OK,new { validationResponse = code });
+            //}
+            foreach (var item in events)
+            {
+                //log.Info(item);
+                log.Info($"Event => {item.EventType} Subject => {item.Subject}\n");
+                //log.Info(item);
+                if (item.EventType == "UpdateMood")
+                {
+                    RavenAPI.Controllers.MoodUpdater mu = new MoodUpdater();
+                    mu.ProcessFireMoodUpdate(item.Data);
+                }
+            }
+
+
+            log.Info("C# HTTP trigger function processed a request.");
+
+            // Fetching the name from the path parameter in the request URL
+            return req.CreateResponse(HttpStatusCode.OK, "Hello");
+
+
         }
     }
 }
