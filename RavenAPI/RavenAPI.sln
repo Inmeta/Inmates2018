@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2027
+VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RavenAPI", "RavenAPI\RavenAPI.csproj", "{373BF615-41C9-40B6-8509-4784FC10C34E}"
 EndProject
@@ -9,7 +9,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextTranslationTest", "Tran
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProcessMessage", "ProcessMessage\ProcessMessage.csproj", "{3C521745-830B-41F2-AC0D-65344D77D82B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoodProcessor", "MoodProcessor\MoodProcessor.csproj", "{953AA63A-03EA-42EC-AD8E-BEB50E858E62}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoodProcessor", "MoodProcessor\MoodProcessor.csproj", "{953AA63A-03EA-42EC-AD8E-BEB50E858E62}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoodProcessorFunctions", "MoodProcessorFunctions\MoodProcessorFunctions.csproj", "{FB78EF52-7159-4CB9-8A7A-83228DAE17CE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{953AA63A-03EA-42EC-AD8E-BEB50E858E62}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{953AA63A-03EA-42EC-AD8E-BEB50E858E62}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{953AA63A-03EA-42EC-AD8E-BEB50E858E62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB78EF52-7159-4CB9-8A7A-83228DAE17CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB78EF52-7159-4CB9-8A7A-83228DAE17CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB78EF52-7159-4CB9-8A7A-83228DAE17CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB78EF52-7159-4CB9-8A7A-83228DAE17CE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
