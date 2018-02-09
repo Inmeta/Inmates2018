@@ -24,7 +24,7 @@ namespace RavenAPI.Controllers
         public int priority { get; set; }
         public bool riskOfWar { get; set; }
         public DateTime messageTimestamp { get; set; }
-        //public byte[] hashmessage { get; set; }
+        public string hashmessage { get; set; }
         public bool tampered { get; set; }
         public string id { get; set; }
     }
@@ -77,7 +77,9 @@ namespace RavenAPI.Controllers
 
             HashAlgorithm alg = MD5.Create();
             var hashed = alg.ComputeHash(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(postcontent)));
-            
+
+            var hashstring = BitConverter.ToString(hashed).Replace("-", "");
+
             client.CreateDocumentAsync(
                 UriFactory.CreateDocumentCollectionUri("RavenCollection", "Messages"),
                 new Message
@@ -94,7 +96,7 @@ namespace RavenAPI.Controllers
                     senderUser = postcontent.senderUser,
                     messageTimestamp = date,
                     id = postcontent.id,
-                    //hashmessage = hashed,
+                    hashmessage = hashstring,
                     tampered = postcontent.tampered
                 });
             return guid;            
