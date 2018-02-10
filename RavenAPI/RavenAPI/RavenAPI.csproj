@@ -326,6 +326,10 @@
       <Project>{3c521745-830b-41f2-ac0d-65344d77d82b}</Project>
       <Name>ProcessMessage</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RavenDatabase\RavenDatabase.csproj">
+      <Project>{5e9d19b6-52cb-4af6-a4e9-801b4d8aba61}</Project>
+      <Name>RavenDatabase</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />

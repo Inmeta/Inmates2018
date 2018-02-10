@@ -7,21 +7,22 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Host;
 using Newtonsoft.Json;
-using RavenAPI.Controllers;
+using RavenDatabase.Collections;
 
 namespace MoodProcessorFunctions
 {
+    public class GridEvent
+    {
+        public string Id { get; set; }
+        public string EventType { get; set; }
+        public string Subject { get; set; }
+        public DateTime EventTime { get; set; }
+        public object Data { get; set; }
+        public string Topic { get; set; }
+    }
+
     public static class Function1
     {
-        public class GridEvent
-        {
-            public string Id { get; set; }
-            public string EventType { get; set; }
-            public string Subject { get; set; }
-            public DateTime EventTime { get; set; }
-            public Message Data { get; set; }
-            public string Topic { get; set; }
-        }
 
         [FunctionName("MoodFoodProcessor")]
         public static async Task<HttpResponseMessage> Run([HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)]HttpRequestMessage req, TraceWriter log)
@@ -53,8 +54,7 @@ namespace MoodProcessorFunctions
                 //log.Info(item);
                 if (item.EventType == "UpdateMood")
                 {
-                    RavenAPI.Controllers.MoodUpdater mu = new MoodUpdater();
-                    mu.ProcessFireMoodUpdate(item.Data);
+                    new RavenDatabase.Collections.MoodsCollectionAPI().HandleMoodUpdate(item.Data);
                 }
             }
 
@@ -67,4 +67,7 @@ namespace MoodProcessorFunctions
 
         }
     }
+
 }
+
+
