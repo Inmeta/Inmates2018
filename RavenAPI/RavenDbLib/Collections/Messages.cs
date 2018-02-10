@@ -43,7 +43,11 @@ namespace RavenDatabase.Collections
         public IQueryable<Message> Get(string senderTenantName, string senderTenantId, string receiverTenantId, string receivertenantName)
         {
             var query = "";
-            if (!String.IsNullOrEmpty(senderTenantName))
+            if (!String.IsNullOrEmpty(senderTenantId) && !String.IsNullOrEmpty(receiverTenantId))
+            {
+                query = string.Format("SELECT * FROM c WHERE c.senderTenantName='{0}' and c.receiverTenantId={1}", senderTenantName, receiverTenantId);
+            }
+            else if (!String.IsNullOrEmpty(senderTenantName))
                 query = string.Format("SELECT * FROM c WHERE c.senderTenantName='{0}'", senderTenantName);
             else if (!String.IsNullOrEmpty(senderTenantId))
                 query = string.Format("SELECT * FROM c WHERE c.senderTenantId='{0}'", senderTenantId);
