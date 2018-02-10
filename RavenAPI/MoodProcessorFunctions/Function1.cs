@@ -7,7 +7,6 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Host;
 using Newtonsoft.Json;
-using RavenDatabase.Collections;
 
 namespace MoodProcessorFunctions
 {
@@ -54,7 +53,7 @@ namespace MoodProcessorFunctions
                 //log.Info(item);
                 if (item.EventType == "UpdateMood")
                 {
-                    new RavenDatabase.Collections.MoodsCollectionAPI().HandleMoodUpdate(item.Data);
+                    //new RavenDatabase.Collections.MoodsCollectionAPI().HandleMoodUpdate(item.Data);
                 }
             }
 

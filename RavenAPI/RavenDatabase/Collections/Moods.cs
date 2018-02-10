@@ -32,19 +32,19 @@ namespace RavenDatabase.Collections
         }
 
 
-        public class MoodCollectionAPI
+    public class MoodCollectionAPI
+    {
+        private DocumentClient client;
+
+        public void DispatchMoodUpdate(Message msg)
         {
-            private DocumentClient client;
+            //HandleMoodUpdate(msg);
+            string topicEndpoint = "https://inmateseventgrid.northeurope-1.eventgrid.azure.net/api/events";
+            string sasKey = "rl4ZTyin7VJ/VdVisbJx07a4YRUcrlTmMXxon6qQaKk=";
 
-            public void DispatchMoodUpdate(Message msg)
-            {
-                //HandleMoodUpdate(msg);
-                string topicEndpoint = "https://inmateseventgrid.northeurope-1.eventgrid.azure.net/api/events";
-                string sasKey = "rl4ZTyin7VJ/VdVisbJx07a4YRUcrlTmMXxon6qQaKk=";
-
-                HttpClient client = new HttpClient();
-                client.DefaultRequestHeaders.Add("aeg-sas-key", sasKey);
-                client.DefaultRequestHeaders.UserAgent.ParseAdd("RavenAPI");
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Add("aeg-sas-key", sasKey);
+            client.DefaultRequestHeaders.UserAgent.ParseAdd("RavenAPI");
 
             List<GridEvent<Message>> eventList = new List<GridEvent<Message>>
             {
@@ -59,12 +59,14 @@ namespace RavenDatabase.Collections
             };
 
             string json = JsonConvert.SerializeObject(eventList);
-                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, topicEndpoint)
-                {
-                    Content = new StringContent(json, Encoding.UTF8, "application/json")
-                };
-                HttpResponseMessage response = client.SendAsync(request).GetAwaiter().GetResult();
-            }
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, topicEndpoint)
+            {
+                Content = new StringContent(json, Encoding.UTF8, "application/json")
+            };
+            HttpResponseMessage response = client.SendAsync(request).GetAwaiter().GetResult();
+            HandleMoodUpdate(msg);
+        }
+    
 
             public void HandleMoodUpdate(Message msg)
             {
