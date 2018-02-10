@@ -45,7 +45,7 @@ namespace RavenDatabase.Collections
             var query = "";
             if (!String.IsNullOrEmpty(senderTenantId) && !String.IsNullOrEmpty(receiverTenantId))
             {
-                query = string.Format("SELECT * FROM c WHERE c.senderTenantName='{0}' and c.receiverTenantId={1}", senderTenantName, receiverTenantId);
+                query = string.Format("SELECT * FROM c WHERE c.senderTenantId='{0}' or c.receiverTenantId='{1}'", senderTenantId, receiverTenantId);
             }
             else if (!String.IsNullOrEmpty(senderTenantName))
                 query = string.Format("SELECT * FROM c WHERE c.senderTenantName='{0}'", senderTenantName);
