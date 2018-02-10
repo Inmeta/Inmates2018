@@ -1,9 +1,9 @@
 ﻿using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using System;
 using System.Threading.Tasks;
-using System.Web.Configuration;
 
-namespace RavenAPI.Helpers
+
+namespace RavenDatabase.Helpers
 {
     public static class AuthHelper
     {
@@ -16,8 +16,9 @@ namespace RavenAPI.Helpers
         public static async Task<string> GetToken(string authority, string resource, string scope)
         {
             var authContext = new AuthenticationContext(authority);
-            ClientCredential clientCred = new ClientCredential(WebConfigurationManager.AppSettings["ClientId"],
-                WebConfigurationManager.AppSettings["ClientSecret"]);
+            ClientCredential clientCred = new ClientCredential(
+                "7b81e2a4-2637-4a8f-ba01-2c5ec382d4e8",
+                "SSm55d7hBpiwSXtdrzIFip0H9HtkMxcigaOGXfB5aAI=");
             AuthenticationResult result = await authContext.AcquireTokenAsync(resource, clientCred);
 
             if (result == null)
